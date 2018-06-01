@@ -79,7 +79,9 @@ The `:stats` are a breakdown of the results. `:defective_rows` and `:error_rows`
 
 `:data` is broken down into the following categories: `:valid_data`, `:encoded_data`, `:defective_data`, and `:error_data`.
 
-`:valid_data` is the most important data and you can access it with `sanitized_data[:data][:valid_data]`.  Each non-UTF8 row will be included in its original syntax like below and can be accessed directly via `sanitized_data[:data][:encoded_data]`.  **You can change the name of `sanitized_data` to anything you like, but it must be followed with `[:data][:valid_data]` and `[:data][:encoded_data]`, etc.**
+`:valid_data` is the most important data and you can access it with `sanitized_data[:data][:valid_data]`.  Each non-UTF8 row will be included in its original syntax like below and can be accessed directly via `sanitized_data[:data][:encoded_data]`.  
+
+**You can change the name of `sanitized_data` to anything you like, but it must be followed with `[:data][:valid_data]` and `[:data][:encoded_data]`, etc.**
 
 `:pollute_seeds` is only for running seed data.  It injects each row with non-UTF8 and extra whitespace for testing.  It can be ignored and will only run if your input is nil, which tells the system that you are intentionally trying to run seed data for testing.
 ```
