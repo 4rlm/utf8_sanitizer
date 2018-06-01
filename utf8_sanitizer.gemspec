@@ -14,8 +14,8 @@ Gem::Specification.new do |spec|
   spec.homepage      = 'https://github.com/4rlm/utf8_sanitizer'
   spec.license       = 'MIT'
 
-  spec.summary       = "Still in Development: Removes invalid UTF8 characters, and extra whitespace (carriage returns, new lines, tabs, spaces, etc.) from csv, or strings."
-  spec.description   = "Removes invalid UTF8 characters, and extra whitespace (carriage returns, new lines, tabs, spaces, etc.) from csv, or strings.\n Example: ABC Au\\xC1tos,123 E Main St,Anytown,TX,75142,(888) 555-1234\\n\\r\\n  =>  ABC Autos,123 E Main St,Anytown,TX,75142,(888) 555-1234"
+  spec.summary       = "Still in BETA: Removes invalid UTF8 characters, and extra whitespace (carriage returns, new lines, tabs, spaces, etc.) from csv, or strings."
+  spec.description   = "Still in BETA: Removes invalid UTF8 characters, and extra whitespace (carriage returns, new lines, tabs, spaces, etc.) from csv, or strings.\n Example: ABC Au\\xC1tos,123 E Main St,Anytown,TX,75142,(888) 555-1234\\n\\r\\n  =>  ABC Autos,123 E Main St,Anytown,TX,75142,(888) 555-1234"
 
   if spec.respond_to?(:metadata)
     spec.metadata['allowed_push_host'] = "https://rubygems.org"

@@ -1,11 +1,9 @@
 
 module Utf8Sanitizer
-  class UTF
+  class Run
 
     def initialize
       @crm_data = {}
-      @tools = Utf8Sanitizer::Tools.new
-      @global_hash = @tools.grab_global_hash
     end
 
 
