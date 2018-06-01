@@ -7,7 +7,7 @@
 /spec/reports/
 /tmp/
 
-crm_formatter-*.gem
+utf8_sanitizer-*.gem
 .DS_Store
 .idea/
 .xlsx
