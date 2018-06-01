@@ -18,7 +18,7 @@ Gem::Specification.new do |spec|
   spec.description   = "Removes invalid UTF8 characters, and extra whitespace (carriage returns, new lines, tabs, spaces, etc.) from csv, or strings. Example: ABC Au\\xC1tos,123 E Main St,Anytown,TX,75142,(888) 457-4391\\n\\r\\n => ABC Autos,123 E Main St,Anytown,TX,75142,(888) 457-4391"
 
   if spec.respond_to?(:metadata)
-    spec.metadata['allowed_push_host'] = 'rubygems.org'
+    spec.metadata['allowed_push_host'] = 'https://rubygems.org'
   else
     raise 'RubyGems 2.0 or newer is required to protect against ' \
       'public gem pushes.'
