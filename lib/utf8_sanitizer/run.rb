@@ -8,7 +8,6 @@ module Utf8Sanitizer
 
 
     def import(args={})
-      binding.pry
       @crm_data = { stats: nil, data: nil, file_path: nil, criteria: nil }
       @crm_data.merge!(args)
       keys = args.compact.keys
