@@ -4,7 +4,6 @@
 module Utf8Sanitizer
   class UTF
     def initialize(args={})
-      @utf_result = { stats: {}, data: {} }
       @valid_rows = []
       @encoded_rows = []
       @defective_rows = []
@@ -18,8 +17,7 @@ module Utf8Sanitizer
     def validate_data(args={})
       args = args.slice(:file_path, :data, :pollute_seeds)
       args = args.compact
-
-      @seed = Seed.new if args.fetch(:pollute_seeds)
+      @seed = Seed.new if args[:pollute_seeds]
       file_path = args[:file_path]
       data = args[:data]
 
@@ -37,12 +35,10 @@ module Utf8Sanitizer
       perfect = groups['perfect']
 
       header_row_count = @headers.any? ? 1 : 0
-      stats = { total_rows: @row_id, header_row: header_row_count, valid_rows: @valid_rows.count, error_rows: @error_rows.count, defective_rows: @defective_rows.count, perfect_rows: perfect, encoded_rows: @encoded_rows.count, wchar_rows: wchar }
-      data = { valid_data: @valid_rows, encoded_data: @encoded_rows, defective_data: @defective_rows, error_data: @error_rows }
-      @utf_result = { stats: stats, data: data }
-      utf_result = @utf_result
-      initialize
-      utf_result
+      utf_result = {
+        stats: { total_rows: @row_id, header_row: header_row_count, valid_rows: @valid_rows.count, error_rows: @error_rows.count, defective_rows: @defective_rows.count, perfect_rows: perfect, encoded_rows: @encoded_rows.count, wchar_rows: wchar },
+        data: { valid_data: @valid_rows, encoded_data: @encoded_rows, defective_data: @defective_rows, error_data: @error_rows }
+      }
     end
 
     #################### * VALIDATE CSV * ####################

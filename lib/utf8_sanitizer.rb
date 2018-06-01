@@ -1,37 +1,27 @@
 require "utf8_sanitizer/version"
-# require 'utf8_sanitizer/run'
 require 'utf8_sanitizer/seed'
 require 'utf8_sanitizer/utf'
 require 'pry'
 
 module Utf8Sanitizer
 
-  def self.run_wrap
-    # run = self::Run.new
-    data = import ## returns formatted urls.
-    binding.pry
-    data
-  end
-
-  def self.import(args={})
-    binding.pry
-    data = { stats: nil, data: nil, file_path: nil, criteria: nil }
-    data.merge!(args)
+  ## Args must include :data or :file_path, else seeds will run by default.
+  def self.sanitize(args={})
     keys = args.compact.keys
+    input = { stats: nil, file_path: nil, data: nil }.merge(args)
 
+    ## Grabs seeds if :data or :file_path empty.
     unless (keys & [:data, :file_path]).any?
-      data[:file_path] = Seed.new.grab_seed_file_path
-      # @data[:data] = Seed.new.grab_seed_hashes
-      data[:pollute_seeds] = true
-      unless keys.include?(:criteria)
-        data[:criteria] = Seed.new.grab_seed_web_criteria
-      end
+      ## Toggle data[:file_path] & data[:data] to test csv parsing or data hashes.
+      # input[:file_path] = Seed.new.grab_seed_file_path
+      input[:data] = Seed.new.grab_seed_hashes
+
+      ## For Testing: Pollute_seeds adds non-utf8 chars to each line.
+      input[:pollute_seeds] = true
     end
 
-    utf_result = Utf8Sanitizer::UTF.new.validate_data(data)
-    data.merge!(utf_result)
-    binding.pry
-    data
+    ## Sanitizes input hash, then merges results to original input hash, and returns as sanitized_data.
+    input.merge!(Utf8Sanitizer::UTF.new.validate_data(input))
   end
 
 
