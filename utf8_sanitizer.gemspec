@@ -15,7 +15,7 @@ Gem::Specification.new do |spec|
   spec.license       = 'MIT'
 
   spec.summary       = "Removes invalid UTF8 characters & extra whitespace from csv or strings."
-  spec.description   = "Removes invalid UTF8 characters & extra whitespace (carriage returns, new lines, tabs, spaces, etc.) from csv, or strings.\n Example: ABC Au\\xC1tos,123 E Main St,Anytown,TX,75142,(888) 555-1234\\n\\r\\n  =>  ABC Autos,123 E Main St,Anytown,TX,75142,(888) 555-1234"
+  spec.description   = "Removes invalid UTF8 characters & extra whitespace (carriage returns, new lines, tabs, spaces, etc.) from csv or strings.\n Example: ABC Au\\xC1tos,123 E Main St,Anytown,TX,75142,(888) 555-1234\\n\\r\\n  =>  ABC Autos,123 E Main St,Anytown,TX,75142,(888) 555-1234"
 
   if spec.respond_to?(:metadata)
     spec.metadata['allowed_push_host'] = "https://rubygems.org"

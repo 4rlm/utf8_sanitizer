@@ -1,8 +1,11 @@
 # Utf8Sanitizer
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/utf8_sanitizer`. To experiment with that code, run `bin/console` for an interactive prompt.
+Removes invalid UTF8 characters & extra whitespace (carriage returns, new lines, tabs, spaces, etc.) from csv or strings.
+Example: ABC Au\\xC1tos,123 E Main St,Anytown,TX,75142,(888) 555-1234\\n\\r\\n
+Returns: ABC Autos,123 E Main St,Anytown,TX,75142,(888) 555-1234
+Non-UTF8: \\xC1
+Extra whitespace: \\n\\r\\n
 
-TODO: Delete this and the text above, and describe your gem
 
 ## Installation
 
