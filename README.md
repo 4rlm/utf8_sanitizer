@@ -47,23 +47,23 @@ sanitized_data = Utf8Sanitizer.sanitize(args)
 #### 2. Hash of Strings
 This is a good option if you are scraping data or cleaning up existing databases.  Pass your data as a hash like below.  Hash MUST be a SYMBOL and named `:data`.  The value of `:data` should be an array of hashes like below and can be any size from one to many tens of thousands.  The hashes inside the data array can be named anything from crm contact data like below, stats, recipes, or any custom hashes as long as they are in an array and resemble the syntax and structure like below.
 ```
-data_hash = [ { url: 'abc_autos_example.com',
-           act_name: 'ABC Aut\x92os',
-           street: '123 E Main St\r\n',
-           city: 'Austin',
-           state: 'TX',
-           zip: '78735',
-           phone: '(888) 555-1234\r\n' },
-         { url: 'xyz_trucks_example',
-           act_name: 'XYZ Aut\xC1os',
-           street: '456 W Main St\r\n',
-           city: 'Austin',
-           state: 'TX',
-           zip: '78735',
-           phone: '(800) 555-5678\r\n' },
-      }]
+array_of_hashes = [ { url: 'abc_autos_example.com',
+                       act_name: 'ABC Aut\x92os',
+                       street: '123 E Main St\r\n',
+                       city: 'Austin',
+                       state: 'TX',
+                       zip: '78735',
+                       phone: '(888) 555-1234\r\n' },
+                     { url: 'xyz_trucks_example',
+                       act_name: 'XYZ Aut\xC1os',
+                       street: '456 W Main St\r\n',
+                       city: 'Austin',
+                       state: 'TX',
+                       zip: '78735',
+                       phone: '(800) 555-5678\r\n' },
+                  }]
 
-sanitized_data = Utf8Sanitizer.sanitize(data: data_hash)
+sanitized_data = Utf8Sanitizer.sanitize(data: array_of_hashes)
 ```
 
 #### 3. Run Seed Data to Test
