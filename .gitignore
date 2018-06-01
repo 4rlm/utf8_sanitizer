@@ -1,0 +1,16 @@
+/.bundle/
+/.yardoc
+/Gemfile.lock
+/_yardoc/
+/coverage/
+/pkg/
+/spec/reports/
+/tmp/
+
+crm_formatter-*.gem
+.DS_Store
+.idea/
+.xlsx
+.txt
+.csv
+!extensions.csv
