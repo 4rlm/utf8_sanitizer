@@ -21,7 +21,9 @@ module Utf8Sanitizer
     end
 
     ## Sanitizes input hash, then merges results to original input hash, and returns as sanitized_data.
-    input.merge!(Utf8Sanitizer::UTF.new.validate_data(input))
+    sanitized_data = input.merge!(Utf8Sanitizer::UTF.new.validate_data(input))
+    binding.pry
+    sanitized_data
   end
 
 
