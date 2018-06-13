@@ -27,6 +27,7 @@ module Utf8Sanitizer
     end
 
     ### Sample Hashes for validate_data
+    # Utf8Sanitizer::Seed.new.grab_seed_hashes
     def grab_seed_hashes
       [{ row_id: 1,
          url: 'stanleykaufman.com',

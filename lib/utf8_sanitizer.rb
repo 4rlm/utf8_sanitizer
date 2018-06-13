@@ -5,6 +5,10 @@ require 'pry'
 
 module Utf8Sanitizer
 
+  # def self.sample
+  #   return 'yes'
+  # end
+
   ## Args must include :data or :file_path, else seeds will run by default.
   def self.sanitize(args={})
     keys = args.compact.keys
