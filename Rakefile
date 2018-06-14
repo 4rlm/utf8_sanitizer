@@ -10,10 +10,12 @@ task :test => :spec
 task :console do
   require 'irb'
   require 'irb/completion'
-  require 'utf8_sanitizer' # You know what to do.
+  require 'utf8_sanitizer'
   require "active_support/all"
   ARGV.clear
-  # sanitized_data = Utf8Sanitizer.sanitize(file_path: "./lib/utf8_sanitizer/csv/seeds_mini.csv")
-  sanitized_data = Utf8Sanitizer.sanitize
+  orig_hashes = [{ :row_id=>"1", :url=>"stanleykaufman.com", :act_name=>"Stanley Chevrolet Kaufman\x99_\xCC", :street=>"825 E Fair St", :city=>"Kaufman", :state=>"TX", :zip=>"75142", :phone=>"(888) 457-4391\r\n" }]
+
+  # sanitized_data = Utf8Sanitizer.sanitize(file_path: './lib/utf8_sanitizer/csv/seeds_dirty_1.csv')
+  sanitized_data = Utf8Sanitizer.sanitize(data: orig_hashes)
   IRB.start
 end

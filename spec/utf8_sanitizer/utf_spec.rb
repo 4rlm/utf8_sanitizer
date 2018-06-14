@@ -5,6 +5,28 @@ describe "UTF" do
   let(:utf_obj) { Utf8Sanitizer::UTF.new }
   let(:headers) { ["row_id", "url", "act_name", "street", "city", "state", "zip", "phone"] }
   let(:valid_rows) { [{ :row_id=>"1", :url=>"stanleykaufman.com", :act_name=>"Stanley Chevrolet Kaufman", :street=>"825 E Fair St", :city=>"Kaufman", :state=>"TX", :zip=>"75142", :phone=>"(888) 457-4391" }] }
+
+  let(:orig_hashes) { [{ :row_id=>"1", :url=>"stanleykaufman.com", :act_name=>"Stanley Chevrolet Kaufman\x99_\xCC", :street=>"825 E Fair St", :city=>"Kaufman", :state=>"TX", :zip=>"75142", :phone=>"(888) 457-4391\r\n" }] }
+
+  let(:utf_result) { {:stats=>
+    {:total_rows=>1, :header_row=>1, :valid_rows=>1, :error_rows=>0, :defective_rows=>0, :perfect_rows=>0, :encoded_rows=>1, :wchar_rows=>1},
+   :data=>
+    {:valid_data=>
+      [{:row_id=>"1",
+        :utf_status=>"encoded, wchar",
+        :url=>"stanleykaufman.com",
+        :act_name=>"Stanley Chevrolet Kaufman",
+        :street=>"825 E Fair St",
+        :city=>"Kaufman",
+        :state=>"TX",
+        :zip=>"75142",
+        :phone=>"(888) 457-4391"}],
+     :encoded_data=>
+      [{:row_id=>1, :text=>"1,stanleykaufman.com,Stanley Chevrolet Kaufman\x99_\xCC,825 E Fair St,Kaufman,TX,75142,(888) 457-4391\r\n"}],
+     :defective_data=>[],
+     :error_data=>[] }}
+  }
+
   before { utf_obj.headers = headers }
 
   context '#line_parse' do
@@ -18,6 +40,17 @@ describe "UTF" do
 
     it "row to data_hash" do
       expect(utf_obj.line_parse(second_validated_line)).to eql(valid_rows)
+    end
+  end
+
+  context '#process_hash_row' do
+    let(:hsh) { {:row_id=>1, :url=>"stanleykaufman.com", :act_name=>"Stanley Chevrolet Kaufman", :street=>"825 E Fair St", :city=>"Kaufman", :state=>"TX", :zip=>"75142", :phone=>"(888) 457-4391"} }
+    result = '...'
+
+    it "..." do
+      ### Not Complete.  Revisit later.
+      # binding.pry
+      expect(utf_obj.process_hash_row(hsh)).to eql(result)
     end
   end
 
@@ -73,20 +106,78 @@ describe "UTF" do
     it "gets line from utf_hash" do
       expect(utf_obj.utf_filter(utf)).to eql(line)
     end
-
   end
 
   context '#validate_data' do
-    let(:args) { {:data=> [{:row_id=>1, :url=>"stanleykaufman.com", :act_name=>"Stanley Chevrolet Kaufman\xC2_\xF8", :street=>"825 E Fair St", :city=>"Kaufman", :state=>"TX", :zip=>"75142", :phone=>"(888) 457-4391\r\n"}]} }
+    let(:args) { {:data=> [{:row_id=>1, :url=>"stanleykaufman.com", :act_name=>"Stanley Chevrolet Kaufman\x99_\xCC", :street=>"825 E Fair St", :city=>"Kaufman", :state=>"TX", :zip=>"75142", :phone=>"(888) 457-4391\r\n"}]} }
+    let(:headers) { [] }
+    before { utf_obj.headers = headers }
 
-    utf_result = { :stats=> {:total_rows=>1,
-                            :header_row=>1,
-                            :valid_rows=>1,
-                            :error_rows=>0,
-                            :defective_rows=>0,
-                            :perfect_rows=>0,
-                            :encoded_rows=>1, :wchar_rows=>1},
-                    :data=> { :valid_data=> [{:row_id=>"1",
+    it "UTF start & end: input as array of hashes or file_path, returns utf_result" do
+      expect(utf_obj.validate_data(args)).to eql(utf_result)
+    end
+  end
+
+  context '#compile_results' do
+    valid_rows = [{:row_id=>"1", :utf_status=>"encoded, wchar", :url=>"stanleykaufman.com", :act_name=>"Stanley Chevrolet Kaufman", :street=>"825 E Fair St", :city=>"Kaufman", :state=>"TX", :zip=>"75142", :phone=>"(888) 457-4391"}]
+    encoded_rows = [{:row_id=>1, :text=>"1,stanleykaufman.com,Stanley Chevrolet Kaufman\x99_\xCC,825 E Fair St,Kaufman,TX,75142,(888) 457-4391\r\n"}]
+    row_id = 1
+    before { utf_obj.row_id = row_id }
+    before { utf_obj.valid_rows = valid_rows }
+    before { utf_obj.encoded_rows = encoded_rows }
+
+    it 'Tallies instance vars and returns final utf_result' do
+      expect(utf_obj.compile_results).to eql(utf_result)
+    end
+  end
+
+
+  context '#validate_csv' do
+    let(:file_path) { './lib/utf8_sanitizer/csv/seeds_dirty_1.csv' }
+    headers = []
+    before { utf_obj.headers = headers }
+
+    let(:utf_results) { {:stats=>
+                          {:total_rows=>2, :header_row=>1, :valid_rows=>1, :error_rows=>0, :defective_rows=>0, :perfect_rows=>0, :encoded_rows=>1, :wchar_rows=>0},
+                       :data=>
+                        {:valid_data=>
+                          [{:row_id=>1,
+                            :utf_status=>"encoded",
+                            :url=>"http://www.courtesyfordsales.com",
+                            :act_name=>"Courtesy Ford",
+                            :street=>"1410 West Pine Street Hattiesburg",
+                            :city=>"Wexford",
+                            :state=>"MS",
+                            :zip=>"39401",
+                            :phone=>"512-555-1212"}],
+                         :encoded_data=>
+                          [{:row_id=>1,
+                            :text=>
+                             "http://www.courtesyfordsales.com,Courtesy Ford,__\xD5\xCB\xEB\x8F\xEB__\xD5\xCB\xEB\x8F\xEB____1410 West Pine Street Hattiesburg,Wexford,MS,39401,512-555-1212"}],
+                         :defective_data=>[],
+                         :error_data=>[]}}
+                    }
+
+    it "takes csv file_path and returns utf_results" do
+      expect(utf_obj.validate_csv(file_path)).to eql(utf_results)
+    end
+
+  end
+
+
+
+  context '#validate_hashes' do
+    headers = []
+    before { utf_obj.headers = headers }
+    let(:results) { {:stats=> { :total_rows=>"1",
+                                :header_row=>1,
+                                :valid_rows=>1,
+                                :error_rows=>0,
+                                :defective_rows=>0,
+                                :perfect_rows=>0,
+                                :encoded_rows=>1,
+                                :wchar_rows=>1},
+                     :data=> {:valid_data=> [{:row_id=>"1",
                                               :utf_status=>"encoded, wchar",
                                               :url=>"stanleykaufman.com",
                                               :act_name=>"Stanley Chevrolet Kaufman",
@@ -95,27 +186,16 @@ describe "UTF" do
                                               :state=>"TX",
                                               :zip=>"75142",
                                               :phone=>"(888) 457-4391"}],
-                              :encoded_data=> [{:row_id=>1,
-                                                :text=>"1,stanleykaufman.com,Stanley Chevrolet Kaufman\xC2_\xF8,825 E Fair St,Kaufman,TX,75142,(888) 457-4391\r\n"}],
-                             :defective_data=>[],
-                             :error_data=>[]
-                           }
+                               :encoded_data=>
+                                [{:row_id=>"1", :text=>"1,stanleykaufman.com,Stanley Chevrolet Kaufman\x99_\xCC,825 E Fair St,Kaufman,TX,75142,(888) 457-4391\r\n"}],
+                               :defective_data=>[],
+                               :error_data=>[]}}
                   }
 
-    let(:headers) { [] }
-    before { utf_obj.headers = headers }
-
-    it "UTF start & end: input as array of hashes or file_path, returns utf_result" do
-      expect(utf_obj.validate_data(args)).to eql(utf_result)
+    it 'takes data hashes and returns utf_results' do
+      expect(utf_obj.validate_hashes(orig_hashes)).to eql(results)
     end
-
   end
-
-  # compile_results
-  # validate_csv
-  # validate_hashes
-  # process_hash_row
-
 
 end
 

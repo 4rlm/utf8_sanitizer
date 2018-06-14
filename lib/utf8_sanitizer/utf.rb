@@ -3,7 +3,7 @@
 
 module Utf8Sanitizer
   class UTF
-    attr_accessor :headers, :valid_rows
+    attr_accessor :headers, :valid_rows, :encoded_rows, :row_id
 
     def initialize(args={})
       @valid_rows = []
@@ -24,10 +24,12 @@ module Utf8Sanitizer
       perfect = groups['perfect']
 
       header_row_count = @headers.any? ? 1 : 0
+
       utf_result = {
         stats: { total_rows: @row_id, header_row: header_row_count, valid_rows: @valid_rows.count, error_rows: @error_rows.count, defective_rows: @defective_rows.count, perfect_rows: perfect, encoded_rows: @encoded_rows.count, wchar_rows: wchar },
         data: { valid_data: @valid_rows, encoded_data: @encoded_rows, defective_data: @defective_rows, error_data: @error_rows }
       }
+      utf_result
     end
 
 
@@ -55,7 +57,8 @@ module Utf8Sanitizer
       rescue StandardError => error
         @error_rows << { row_id: @row_id, text: error.message }
       end
-      compile_results ## handles returns.
+      results = compile_results ## handles returns.
+      results
     end
 
     ### process_hash_row - helper VALIDATE HASHES ###
@@ -64,13 +67,17 @@ module Utf8Sanitizer
       if @headers.any?
         keys_or_values = hsh.values
         @row_id = hsh[:row_id]
+        # binding.pry
       else
         keys_or_values = hsh.keys.map(&:to_s)
+        # binding.pry
       end
 
       file_line = keys_or_values.join(',')
       validated_line = utf_filter(check_utf(file_line))
-      line_parse(validated_line)
+      res = line_parse(validated_line)
+      # binding.pry
+      res
     end
 
     ### line_parse - helper VALIDATE HASHES ###
@@ -150,7 +157,8 @@ module Utf8Sanitizer
       rescue StandardError => error
         @error_rows << { row_id: @row_id, text: error.message }
       end
-      compile_results
+      utf_results = compile_results
+      utf_results
     end
 
 
