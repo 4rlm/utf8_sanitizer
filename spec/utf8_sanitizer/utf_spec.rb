@@ -261,35 +261,3 @@ describe "UTF" do
   end
 
 end
-
-
-
-  # context '#validate_hashes' do
-  #   let(:orig_hashes) { Utf8Sanitizer::Seed.new.grab_seed_hashes }
-  #
-  #   it "validates hashes" do
-  #     expect(utf_obj.validate_hashes(orig_hashes)).to eql(ExpectedResults.result_for_validate_hashes)
-  #   end
-  # end
-
-  # context '#utf_sample' do
-  #   it "returns 'yes'" do
-  #     expect(utf_obj.utf_sample).to eql('yes')
-  #   end
-  # end
-
-  # describe "sample" do
-  # before do
-  #   @utf = Utf8Sanitizer::UTF.new
-  #   # @csv_path = Dir.pwd + "/spec/csvs/"
-  # end
-  #
-  # it "utf_sample" do
-  #  @utf.utf_sample.to eq('yes')
-  #  expect(@utf.utf_sample).to eq('yes')
-  #
-  #   # headers = ["type", "name", "color", "price"]
-  #   # @utf.parse(@csv_path + "custom_headers.csv", headers)
-  #   # expect(@utf.count).to eq 4
-  #   # expect(@utf.cols).to eq headers
-  # end
