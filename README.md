@@ -1,6 +1,6 @@
 # Utf8Sanitizer
 
-Removes invalid UTF8 characters & extra whitespace (carriage returns, new lines, tabs, spaces, etc.) from csv or strings.
+Removes invalid UTF8 characters & extra whitespace (carriage returns, new lines, tabs, spaces, etc.) from csv or strings. Also provides detailed report indicating row numbers containing non-UTF8 and extra whitespace, and before and after to compare changes.
 
 Example:
 ```
@@ -35,7 +35,9 @@ Or install it yourself as:
 
 ## Usage
 
-You have three options for UTF8 Sanitizing your data: CSV Parsing, Data Hash of strings, or run default seed data to test.
+Options for UTF8 Sanitizing data:
+1. CSV Parsing
+2. Data Hash of strings
 
 #### 1. CSV Parsing
 This is a good option if you are having problems with a CSV containing non-UTF8 characters.  Pass your file_path as a hash like below.  Hash MUST be a SYMBOL and named `:file_path`.  If not, default seeds will be passed as the system detects empty user input and thinks user is trying to run built-in seed data for testing.
@@ -66,12 +68,6 @@ array_of_hashes = [ { url: 'abc_autos_example.com',
 sanitized_data = Utf8Sanitizer.sanitize(data: array_of_hashes)
 ```
 
-#### 3. Run Seed Data to Test
-If you want to run built-in seed data to first test, simply run as below without passing args.
-```
-sanitized_data = Utf8Sanitizer.sanitize
-```
-
 ### Returned Sanitized Data Format
 The returned data will be in hash format with the following keys: `:stats`, `:file_path`, `:data` like below.  
 
@@ -83,37 +79,48 @@ The `:stats` are a breakdown of the results. `:defective_rows` and `:error_rows`
 
 **You can change the name of `sanitized_data` to anything you like, but it must be followed with `[:data][:valid_data]` and `[:data][:encoded_data]`, etc.**
 
-`:pollute_seeds` is only for running seed data.  It injects each row with non-UTF8 and extra whitespace for testing.  It can be ignored and will only run if your input is nil, which tells the system that you are intentionally trying to run seed data for testing.
 ```
-{:stats=>
-  {:total_rows=>2, :header_row=>1, :valid_rows=>2, :error_rows=>0, :defective_rows=>0, :perfect_rows=>0, :encoded_rows=>2, :wchar_rows=>2},
- :file_path=>nil,
- :data=>
-  {:valid_data=>
-    [{:row_id=>"1",
-      :utf_status=>"encoded, wchar",
-      :url=>"abc_autos_example.com",
-      :act_name=>"ABC Autos Example",
-      :street=>"123 E Main St",
-      :city=>"Austin",
-      :state=>"TX",
-      :zip=>"78735",
-      :phone=>"(888) 555-1234"},
-     {:row_id=>"2",
-      :utf_status=>"encoded, wchar",
-      :url=>"xyz_trucks_example",
-      :act_name=>"XYZ Trucks Example",
-      :street=>"456 W Main St",
-      :city=>"Austin",
-      :state=>"TX",
-      :zip=>"78735",
-      :phone=>"(800) 555-4321"}],
-   :encoded_data=>
-    [{:row_id=>1, :text=>"1,abc_autos_example.com,ABC Autos Example\x98_\xC0,123 E Main St,Austin,TX,78735,(888) 555-1234\r\n"},
-     {:row_id=>2, :text=>"2,xyz_trucks_example,XYZ \xC1_\xCCTrucks Example,456 W Main St,Austin,TX,78735,(800) 555-4321\r\n"}],
-   :defective_data=>[],
-   :error_data=>[]},
-  :pollute_seeds=>true}
+{ stats:
+  {
+  total_rows: 2,
+  header_row: 1,
+  valid_rows: 2,
+  error_rows: 0,
+  defective_rows: 0,
+  perfect_rows: 0,
+  encoded_rows: 2,
+  wchar_rows: 2
+  },
+  file_path: nil,
+  data:
+  {
+    valid_data:
+    [
+      { row_id: '1',
+        utf_status: 'encoded, wchar',
+        url: 'abc_autos_example.com',
+        act_name: 'ABC Autos Example',
+        street: '123 E Main St',
+        city: 'Austin',
+        state: 'TX',
+        zip: '78735',
+        phone: '(888) 555-1234' },
+      { row_id: '2',
+        utf_status: 'encoded, wchar',
+        url: 'xyz_trucks_example',
+        act_name: 'XYZ Trucks Example',
+        street: '456 W Main St',
+        city: 'Austin',
+        state: 'TX',
+        zip: '78735',
+        phone: '(800) 555-4321' }
+    ],
+    encoded_data:     [{ row_id: 1, text: "1,abc_autos_example.com,ABC Autos Example\x98_\xC0,123 E Main St,Austin,TX,78735,(888) 555-1234\r\n" },
+                       { row_id: 2, text: "2,xyz_trucks_example,XYZ \xC1_\xCCTrucks Example,456 W Main St,Austin,TX,78735,(800) 555-4321\r\n" }],
+    defective_data: [],
+    error_data: []
+  }
+}
 ```
 
 ## Development

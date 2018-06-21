@@ -1,5 +1,5 @@
 # frozen_string_literal: false
-# require 'csv'
+require 'csv'
 
 module Utf8Sanitizer
   class UTF
@@ -35,11 +35,8 @@ module Utf8Sanitizer
 
     #################### * VALIDATE DATA * ####################
     def validate_data(args={})
-      # args[:data] = args[:data][0..0]
-      args = args.slice(:file_path, :data, :pollute_seeds)
+      args = args.slice(:file_path, :data)
       args = args.compact
-      # @seed = Seed.new if args[:pollute_seeds]
-
       file_path = args[:file_path]
       data = args[:data]
 
@@ -94,7 +91,6 @@ module Utf8Sanitizer
     #################### * CHECK UTF * ####################
     def check_utf(text)
       return if text.nil?
-      text = @seed.pollute_seeds(text) if @seed && @headers.any?
       results = { text: text, encoded: nil, wchar: nil, error: nil }
 
       begin
@@ -155,7 +151,6 @@ module Utf8Sanitizer
         @error_rows << { row_id: @row_id, text: error.message }
       end
       utf_results = compile_results
-      utf_results
     end
 
 

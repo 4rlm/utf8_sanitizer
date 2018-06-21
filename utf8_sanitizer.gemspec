@@ -14,11 +14,11 @@ Gem::Specification.new do |spec|
   spec.homepage      = 'https://github.com/4rlm/utf8_sanitizer'
   spec.license       = 'MIT'
 
-  spec.summary       = "Removes invalid UTF8 characters & extra whitespace from csv or strings."
-  spec.description   = "Removes invalid UTF8 characters & extra whitespace (carriage returns, new lines, tabs, spaces, etc.) from csv or strings.\n Example: ABC Au\\xC1tos,123 E Main St,Anytown,TX,75142,(888) 555-1234\\n\\r\\n  =>  ABC Autos,123 E Main St,Anytown,TX,75142,(888) 555-1234"
+  spec.summary       = 'Removes invalid UTF8 characters & extra whitespace (carriage returns, new lines, tabs, spaces, etc.) from csv or strings. Also provides detailed report indicating row numbers containing non-UTF8 and extra whitespace, and before and after to compare changes.'
+  spec.description   = "Removes invalid UTF8 characters & extra whitespace (carriage returns, new lines, tabs, spaces, etc.) from csv or strings. Also provides detailed report indicating row numbers containing non-UTF8 and extra whitespace, and before and after to compare changes.\n Example: ABC Au\\xC1tos,123 E Main St,Anytown,TX,75142,(888) 555-1234\\n\\r\\n  =>  ABC Autos,123 E Main St,Anytown,TX,75142,(888) 555-1234"
 
   if spec.respond_to?(:metadata)
-    spec.metadata['allowed_push_host'] = "https://rubygems.org"
+    spec.metadata['allowed_push_host'] = 'https://rubygems.org'
   else
     raise 'RubyGems 2.0 or newer is required to protect against ' \
       'public gem pushes.'
@@ -31,7 +31,7 @@ Gem::Specification.new do |spec|
   spec.bindir        = 'exe'
   spec.executables   = spec.files.grep(%r{^exe/}) { |f| File.basename(f) }
   spec.require_paths = ['lib']
-  spec.post_install_message = "Thanks for installing utf8_sanitizer!"
+  spec.post_install_message = 'Thanks for installing utf8_sanitizer!'
 
   spec.required_ruby_version = '~> 2.5.1'
   spec.add_dependency 'activesupport', '~> 5.2', '>= 5.2.0'
@@ -40,11 +40,11 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'byebug', '~> 10.0', '>= 10.0.2'
   spec.add_development_dependency 'class_indexer', '~> 0.3.0'
   spec.add_development_dependency 'irbtools', '~> 2.2', '>= 2.2.1'
+  spec.add_development_dependency 'pry', '~> 0.11.3'
   spec.add_development_dependency 'rake', '~> 12.3', '>= 12.3.1'
   spec.add_development_dependency 'rspec', '~> 3.7'
   spec.add_development_dependency 'rubocop', '~> 0.56.0'
   spec.add_development_dependency 'ruby-beautify', '~> 0.97.4'
-  spec.add_development_dependency "pry", "~> 0.11.3"
   # spec.add_runtime_dependency 'library', '~> 2.2'
   # spec.add_dependency 'activerecord', '>= 3.0'
   # spec.add_dependency 'actionpack', '>= 3.0'
