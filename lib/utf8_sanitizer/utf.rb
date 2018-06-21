@@ -3,7 +3,7 @@
 
 module Utf8Sanitizer
   class UTF
-    attr_accessor :headers, :valid_rows, :encoded_rows, :row_id
+    attr_accessor :headers, :valid_rows, :encoded_rows, :row_id, :data_hash, :defective_rows, :error_rows
 
     def initialize(args={})
       @valid_rows = []
@@ -67,16 +67,13 @@ module Utf8Sanitizer
       if @headers.any?
         keys_or_values = hsh.values
         @row_id = hsh[:row_id]
-        # binding.pry
       else
         keys_or_values = hsh.keys.map(&:to_s)
-        # binding.pry
       end
 
       file_line = keys_or_values.join(',')
       validated_line = utf_filter(check_utf(file_line))
       res = line_parse(validated_line)
-      # binding.pry
       res
     end
 
