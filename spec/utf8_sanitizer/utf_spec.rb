@@ -4,24 +4,62 @@ require 'spec_helper'
 describe 'UTF' do
   let(:utf_obj) { Utf8Sanitizer::UTF.new }
   let(:headers) { %w[row_id url act_name street city state zip phone] }
-  let(:valid_rows) { [{ row_id: '1', url: 'stanleykaufman.com', act_name: 'Stanley Chevrolet Kaufman', street: '825 E Fair St', city: 'Kaufman', state: 'TX', zip: '75142', phone: '(888) 457-4391' }] }
+  let(:valid_rows) do
+    [
+      { row_id: '1',
+        url: 'stanleykaufman.com',
+        act_name: 'Stanley Chevrolet Kaufman',
+        street: '825 E Fair St',
+        city: 'Kaufman',
+        state: 'TX',
+        zip: '75142',
+        phone: '(888) 457-4391' }
+    ]
+  end
 
-  let(:orig_hashes) { [{ row_id: '1', url: 'stanleykaufman.com', act_name: "Stanley Chevrolet Kaufman\x99_\xCC", street: '825 E Fair St', city: 'Kaufman', state: 'TX', zip: '75142', phone: "(888) 457-4391\r\n" }] }
+  let(:orig_hashes) do
+    [
+      { row_id: '1',
+        url: 'stanleykaufman.com',
+        act_name: "Stanley Chevrolet Kaufman\x99_\xCC",
+        street: '825 E Fair St',
+        city: 'Kaufman',
+        state: 'TX',
+        zip: '75142',
+        phone: "(888) 457-4391\r\n" }
+    ]
+  end
 
   let(:utf_result) do
-    { stats:     { total_rows: 1, header_row: 1, valid_rows: 1, error_rows: 0, defective_rows: 0, perfect_rows: 0, encoded_rows: 1, wchar_rows: 1 },
-      data:     { valid_data:       [{ row_id: '1',
-                                       utf_status: 'encoded, wchar',
-                                       url: 'stanleykaufman.com',
-                                       act_name: 'Stanley Chevrolet Kaufman',
-                                       street: '825 E Fair St',
-                                       city: 'Kaufman',
-                                       state: 'TX',
-                                       zip: '75142',
-                                       phone: '(888) 457-4391' }],
-                  encoded_data:       [{ row_id: 1, text: "1,stanleykaufman.com,Stanley Chevrolet Kaufman\x99_\xCC,825 E Fair St,Kaufman,TX,75142,(888) 457-4391\r\n" }],
-                  defective_data: [],
-                  error_data: [] } }
+    { stats:
+      { total_rows: 1,
+        header_row: 1,
+        valid_rows: 1,
+        error_rows: 0,
+        defective_rows: 0,
+        perfect_rows: 0,
+        encoded_rows: 1,
+        wchar_rows: 1 },
+      data:
+      { valid_data: [
+        { row_id: '1',
+          utf_status: 'encoded, wchar',
+          url: 'stanleykaufman.com',
+          act_name: 'Stanley Chevrolet Kaufman',
+          street: '825 E Fair St',
+          city: 'Kaufman',
+          state: 'TX',
+          zip: '75142',
+          phone: '(888) 457-4391' }
+      ],
+        encoded_data: [
+          {
+            row_id: 1,
+            text: "1,stanleykaufman.com,Stanley Chevrolet Kaufman\x99_\xCC,825 E Fair St,Kaufman,TX,75142,(888) 457-4391\r\n"
+          }
+        ],
+        defective_data: [],
+        error_data: [] } }
   end
 
   before { utf_obj.headers = headers }
@@ -80,7 +118,16 @@ describe 'UTF' do
 
   describe '#row_to_hsh' do
     let(:row) { ['1', 'stanleykaufman.com', 'Stanley Chevrolet Kaufman', '825 E Fair St', 'Kaufman', 'TX', '75142', '(888) 457-4391'] }
-    result = { row_id: '1', url: 'stanleykaufman.com', act_name: 'Stanley Chevrolet Kaufman', street: '825 E Fair St', city: 'Kaufman', state: 'TX', zip: '75142', phone: '(888) 457-4391' }
+    result = {
+      row_id: '1',
+      url: 'stanleykaufman.com',
+      act_name: 'Stanley Chevrolet Kaufman',
+      street: '825 E Fair St',
+      city: 'Kaufman',
+      state: 'TX',
+      zip: '75142',
+      phone: '(888) 457-4391'
+    }
 
     it 'converts row to hash' do
       expect(utf_obj.row_to_hsh(row)).to eql(result)
@@ -98,10 +145,12 @@ describe 'UTF' do
 
   describe '#check_utf' do
     let(:text) { "1,stanleykaufman.com,Stanley Chevrolet Kaufman\xDD_h∑,825 E Fair St,Kaufman,TX,75142,(888) 457-4391\r\n" }
-    result = { text: "1,stanleykaufman.com,Stanley Chevrolet Kaufman\xDD_h∑,825 E Fair St,Kaufman,TX,75142,(888) 457-4391\r\n",
-               encoded: "1,stanleykaufman.com,Stanley Chevrolet Kaufmanh,825 E Fair St,Kaufman,TX,75142,(888) 457-4391\r\n",
-               wchar: '1,stanleykaufman.com,Stanley Chevrolet Kaufmanh,825 E Fair St,Kaufman,TX,75142,(888) 457-4391',
-               error: nil }
+    result = {
+      text: "1,stanleykaufman.com,Stanley Chevrolet Kaufman\xDD_h∑,825 E Fair St,Kaufman,TX,75142,(888) 457-4391\r\n",
+      encoded: "1,stanleykaufman.com,Stanley Chevrolet Kaufmanh,825 E Fair St,Kaufman,TX,75142,(888) 457-4391\r\n",
+      wchar: '1,stanleykaufman.com,Stanley Chevrolet Kaufmanh,825 E Fair St,Kaufman,TX,75142,(888) 457-4391',
+      error: nil
+    }
 
     it 'converts non-utf8 and removes extra whitespace' do
       expect(utf_obj.check_utf(text)).to eql(result)
@@ -129,7 +178,10 @@ describe 'UTF' do
       end
 
       let(:expected_encoded_rows) do
-        [{ row_id: 1, text: "1,stanleykaufman.com,Stanley Chevrolet Kaufman\xE5_\x99,825 E Fair St,Kaufman,TX,75142,(888) 457-4391\r\n" }]
+        [
+          { row_id: 1,
+            text: "1,stanleykaufman.com,Stanley Chevrolet Kaufman\xE5_\x99,825 E Fair St,Kaufman,TX,75142,(888) 457-4391\r\n" }
+        ]
       end
       let(:expected_error_rows) { [] }
       let(:expected_defective_rows) { [] }
@@ -146,7 +198,20 @@ describe 'UTF' do
   end
 
   describe '#validate_data' do
-    let(:args) { { data: [{ row_id: 1, url: 'stanleykaufman.com', act_name: "Stanley Chevrolet Kaufman\x99_\xCC", street: '825 E Fair St', city: 'Kaufman', state: 'TX', zip: '75142', phone: "(888) 457-4391\r\n" }] } }
+    let(:args) do
+      { data:
+        [
+          { row_id: 1,
+            url: 'stanleykaufman.com',
+            act_name: "Stanley Chevrolet Kaufman\x99_\xCC",
+            street: '825 E Fair St',
+            city: 'Kaufman',
+            state: 'TX',
+            zip: '75142',
+            phone: "(888) 457-4391\r\n" }
+        ] }
+    end
+
     let(:headers) { [] }
     before { utf_obj.headers = headers }
 
@@ -160,7 +225,15 @@ describe 'UTF' do
       utf_obj.row_id = 1
       utf_obj.valid_rows = [
         {
-          row_id: '1', utf_status: 'encoded, wchar', url: 'stanleykaufman.com', act_name: 'Stanley Chevrolet Kaufman', street: '825 E Fair St', city: 'Kaufman', state: 'TX', zip: '75142', phone: '(888) 457-4391'
+          row_id: '1',
+          utf_status: 'encoded, wchar',
+          url: 'stanleykaufman.com',
+          act_name: 'Stanley Chevrolet Kaufman',
+          street: '825 E Fair St',
+          city: 'Kaufman',
+          state: 'TX',
+          zip: '75142',
+          phone: '(888) 457-4391'
         }
       ]
       utf_obj.encoded_rows = [
@@ -184,7 +257,14 @@ describe 'UTF' do
     let(:utf_results) do
       {
         stats: {
-          total_rows: 2, header_row: 1, valid_rows: 1, error_rows: 0, defective_rows: 0, perfect_rows: 0, encoded_rows: 1, wchar_rows: 0
+          total_rows: 2,
+          header_row: 1,
+          valid_rows: 1,
+          error_rows: 0,
+          defective_rows: 0,
+          perfect_rows: 0,
+          encoded_rows: 1,
+          wchar_rows: 0
         },
         data: {
           valid_data: [
@@ -229,16 +309,27 @@ describe 'UTF' do
                  perfect_rows: 0,
                  encoded_rows: 1,
                  wchar_rows: 1 },
-        data: { valid_data: [{ row_id: '1',
-                               utf_status: 'encoded, wchar',
-                               url: 'stanleykaufman.com',
-                               act_name: 'Stanley Chevrolet Kaufman',
-                               street: '825 E Fair St',
-                               city: 'Kaufman',
-                               state: 'TX',
-                               zip: '75142',
-                               phone: '(888) 457-4391' }],
-                encoded_data:                                 [{ row_id: '1', text: "1,stanleykaufman.com,Stanley Chevrolet Kaufman\x99_\xCC,825 E Fair St,Kaufman,TX,75142,(888) 457-4391\r\n" }],
+        data: { valid_data:
+          [
+            {
+              row_id: '1',
+              utf_status: 'encoded, wchar',
+              url: 'stanleykaufman.com',
+              act_name: 'Stanley Chevrolet Kaufman',
+              street: '825 E Fair St',
+              city: 'Kaufman',
+              state: 'TX',
+              zip: '75142',
+              phone: '(888) 457-4391'
+            }
+          ],
+                encoded_data:
+            [
+              {
+                row_id: '1',
+                text: "1,stanleykaufman.com,Stanley Chevrolet Kaufman\x99_\xCC,825 E Fair St,Kaufman,TX,75142,(888) 457-4391\r\n"
+              }
+            ],
                 defective_data: [],
                 error_data: [] } }
     end
