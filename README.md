@@ -95,6 +95,7 @@ The `:stats` are a breakdown of the results. `:defective_rows` and `:error_rows`
 `:data` is broken down into the following categories: `:valid_data`, `:encoded_data`, `:defective_data`, and `:error_data`.
 
 Below is an example of the returned data (`:stats`, `:file_path`, `:data`)
+
 **`sanitized_data` is a local variable, which you can name anything you like, but it must be assigned in the following syntax: `[:data][:valid_data]` and `[:data][:encoded_data]`, etc.**
 
 ```
