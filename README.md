@@ -40,7 +40,15 @@ Options for UTF8 Sanitizing data:
 2. Data Hash of strings
 
 #### 1. CSV Parsing
-To clean CSV file containing non-UTF8 characters, pass file_path as a hash like below.  Hash MUST be a SYMBOL and named `:file_path`
+To clean CSV file containing non-UTF8 characters, pass file_path as a hash like below.  
+Hash MUST meet the following guidelines:
+a. key as a SYMBOL `:` (not key as string)
+b. named `:file_path`
+c. be an Absolute Path from root `./`
+d. be a hash `{file_path: "./path/to/your_csv.csv"}`
+e. passed to `Utf8Sanitizer.sanitize()`
+
+Syntax Example Below:
 ```
 sanitized_data = Utf8Sanitizer.sanitize({file_path: "./path/to/your_csv.csv"})
 ```
