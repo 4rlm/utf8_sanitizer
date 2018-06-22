@@ -6,12 +6,10 @@
 /pkg/
 /spec/reports/
 /tmp/
-/csv/
 
 utf8_sanitizer-*.gem
 .DS_Store
 .idea/
 .xlsx
 .txt
-.csv
-!seeds_dirty_1.csv
+!seed.csv

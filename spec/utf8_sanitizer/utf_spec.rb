@@ -250,7 +250,7 @@ describe 'UTF' do
   end
 
   describe '#validate_csv' do
-    let(:file_path) { './lib/utf8_sanitizer/csv/seeds_dirty_1.csv' }
+    let(:file_path) { './lib/utf8_sanitizer/csv/seed.csv' }
     headers = []
     before { utf_obj.headers = headers }
 
