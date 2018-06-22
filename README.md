@@ -40,14 +40,15 @@ Options for UTF8 Sanitizing data:
 2. Data Hash of strings
 
 #### 1. CSV Parsing
-This is a good option if you are having problems with a CSV containing non-UTF8 characters.  Pass your file_path as a hash like below.  Hash MUST be a SYMBOL and named `:file_path`.  If not, default seeds will be passed as the system detects empty user input and thinks user is trying to run built-in seed data for testing.
+To clean (UTF8 encode) CSV file containing non-UTF8 characters pass file_path as a hash like below.  Hash MUST be a SYMBOL and named `:file_path`
 ```
-args = {file_path: "./path/to/your_csv.csv"}
-sanitized_data = Utf8Sanitizer.sanitize(args)
+sanitized_data = Utf8Sanitizer.sanitize({file_path: "./path/to/your_csv.csv"})
 ```
 
 #### 2. Hash of Strings
-This is a good option if you are scraping data or cleaning up existing databases.  Pass your data as a hash like below.  Hash MUST be a SYMBOL and named `:data`.  The value of `:data` should be an array of hashes like below and can be any size from one to many tens of thousands.  The hashes inside the data array can be named anything from crm contact data like below, stats, recipes, or any custom hashes as long as they are in an array and resemble the syntax and structure like below.
+To clean (UTF8 encode) existing databases, web form submissions, or scraped data pass input data as a hash like below.  Hash MUST be a SYMBOL and named `:data`.  The value of `:data` should be an array of hashes like below.  
+
+Below is just an example.  Your input hash keys inside the parent data array can be named anything (not limited to url, act_name, street, etc.), but must be hashes inside a parent array like the below structure and syntax.
 ```
 array_of_hashes = [ { url: 'abc_autos_example.com',
                        act_name: 'ABC Aut\x92os',
@@ -65,19 +66,24 @@ array_of_hashes = [ { url: 'abc_autos_example.com',
                        phone: '(800) 555-5678\r\n' },
                   }]
 
-sanitized_data = Utf8Sanitizer.sanitize(data: array_of_hashes)
+sanitized_data = Utf8Sanitizer.sanitize({data: array_of_hashes})
 ```
 
 ### Returned Sanitized Data Format
-The returned data will be in hash format with the following keys: `:stats`, `:file_path`, `:data` like below.  
+The returned data will contain a detailed report of the row or line numbers where UTF8 violations and extra white space were located.  The broad categories in the returned data will be in hash format with the following keys: `:stats`, `:file_path`, `:data` like below.
+
+IMPORTANT: `:valid_data` is the clean, converted output from your CSV or strings input, directly accessible via `sanitized_data[:data][:valid_data]`.
+
+Returned data also indicates if the input data was successfully encoded. In rare cases the data is beyond repair, and will be listed in the `:error` category.   
+
+Each non-UTF8 row will be included in its original syntax like the example below and can be accessed directly via `sanitized_data[:data][:encoded_data]`.
 
 The `:stats` are a breakdown of the results. `:defective_rows` and `:error_rows` will usually be the same number which refer to the rows which are beyond repair (very rare). Otherwise, the results will be `:valid_rows` if they were perfect or successfully sanitized, including `:encoded_rows` which refers to the number of rows that contained non-utf8 characters, and `:wchar_rows` which is short for 'whitespace character rows'.
 
 `:data` is broken down into the following categories: `:valid_data`, `:encoded_data`, `:defective_data`, and `:error_data`.
 
-`:valid_data` is the most important data and you can access it with `sanitized_data[:data][:valid_data]`.  Each non-UTF8 row will be included in its original syntax like below and can be accessed directly via `sanitized_data[:data][:encoded_data]`.  
-
-**You can change the name of `sanitized_data` to anything you like, but it must be followed with `[:data][:valid_data]` and `[:data][:encoded_data]`, etc.**
+Below is an example of the returned data (`:stats`, `:file_path`, `:data`)
+**`sanitized_data` is a local variable, which you can name anything you like, but it must be assigned in the following syntax: `[:data][:valid_data]` and `[:data][:encoded_data]`, etc.**
 
 ```
 { stats:
