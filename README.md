@@ -40,13 +40,13 @@ Options for UTF8 Sanitizing data:
 2. Data Hash of strings
 
 #### 1. CSV Parsing
-To clean (UTF8 encode) CSV file containing non-UTF8 characters pass file_path as a hash like below.  Hash MUST be a SYMBOL and named `:file_path`
+To clean CSV file containing non-UTF8 characters, pass file_path as a hash like below.  Hash MUST be a SYMBOL and named `:file_path`
 ```
 sanitized_data = Utf8Sanitizer.sanitize({file_path: "./path/to/your_csv.csv"})
 ```
 
 #### 2. Hash of Strings
-To clean (UTF8 encode) existing databases, web form submissions, or scraped data pass input data as a hash like below.  Hash MUST be a SYMBOL and named `:data`.  The value of `:data` should be an array of hashes like below.  
+To clean existing databases, web form submissions, or scraped data, pass input data as a hash like below.  Hash MUST be a SYMBOL and named `:data`.  The value of `:data` should be an array of hashes like below.  
 
 Below is just an example.  Your input hash keys inside the parent data array can be named anything (not limited to url, act_name, street, etc.), but must be hashes inside a parent array like the below structure and syntax.
 ```
