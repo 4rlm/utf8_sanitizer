@@ -40,8 +40,7 @@ Options for UTF8 Sanitizing data:
 2. Data Hash of strings
 
 #### 1. CSV Parsing
-To clean CSV file containing non-UTF8 characters, pass file_path as a hash like below.  
-Hash MUST meet the following guidelines:
+To clean CSV file containing non-UTF8 characters, pass file_path as a hash like below. Hash MUST meet the following guidelines:
 
 a. key as a SYMBOL `:` (not key as string)
 
