@@ -33,17 +33,17 @@ Gem::Specification.new do |spec|
   spec.require_paths = ['lib']
 
   spec.required_ruby_version = '~> 2.5.1'
+  spec.add_dependency 'bundler', '~> 1.16', '>= 1.16.2'
+  spec.add_dependency 'pry', '~> 0.11.3'
   spec.add_dependency 'activesupport', '~> 5.0'
   # spec.add_dependency "activesupport-inflector", ['~> 0.1.0']
 
   # spec.add_dependency "utf8_sanitizer", "~> 2.0"
   # spec.add_dependency "crm_formatter", "~> 2.4"
 
-  spec.add_development_dependency 'bundler', '~> 1.16', '>= 1.16.2'
   spec.add_development_dependency 'byebug', '~> 10.0', '>= 10.0.2'
   spec.add_development_dependency 'class_indexer', '~> 0.3.0'
   spec.add_development_dependency 'irbtools', '~> 2.2', '>= 2.2.1'
-  spec.add_development_dependency 'pry', '~> 0.11.3'
   spec.add_development_dependency 'rake', '~> 12.3', '>= 12.3.1'
   spec.add_development_dependency 'rspec', '~> 3.7'
   spec.add_development_dependency 'rubocop', '~> 0.56.0'

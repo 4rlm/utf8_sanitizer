@@ -18,6 +18,6 @@ task :console do
   # sanitized_data = Utf8Sanitizer.sanitize(file_path: './lib/utf8_sanitizer/csv/seed.csv')
   # sanitized_data = Utf8Sanitizer.sanitize(data: orig_hashes)
   sanitized_data = Utf8Sanitizer.sanitize
-  puts sanitized_data.inspect
+  # puts sanitized_data.inspect
   IRB.start
 end
