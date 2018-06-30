@@ -12,4 +12,3 @@ utf8_sanitizer-*.gem
 .idea/
 .xlsx
 .txt
-!seed.csv
