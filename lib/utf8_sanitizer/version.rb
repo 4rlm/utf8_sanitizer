@@ -1,3 +1,3 @@
 module Utf8Sanitizer
-  VERSION = '2.15'
+  VERSION = '2.16'
 end

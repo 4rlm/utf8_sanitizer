@@ -2,6 +2,8 @@
 
 [![Build Status](https://travis-ci.org/4rlm/utf8_sanitizer.svg?branch=master)](https://travis-ci.org/4rlm/utf8_sanitizer)
 [![Gem Version](https://badge.fury.io/rb/utf8_sanitizer.svg)](https://badge.fury.io/rb/utf8_sanitizer)
+[![MIT License](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
 
 Removes invalid UTF8 characters & extra whitespace (carriage returns, new lines, tabs, spaces, etc.) from csv or strings. Also provides detailed report indicating row numbers containing non-UTF8 and extra whitespace, and before and after to compare changes.
 
