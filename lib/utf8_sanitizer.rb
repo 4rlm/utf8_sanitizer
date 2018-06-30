@@ -1,6 +1,6 @@
 require 'utf8_sanitizer/version'
 require 'utf8_sanitizer/utf'
-require 'pry'
+# require 'pry'
 
 module Utf8Sanitizer
   ## Args must include :data or :file_path, else seeds will run by default.
