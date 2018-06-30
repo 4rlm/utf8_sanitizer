@@ -1,20 +1,8 @@
 # Utf8Sanitizer
 
 [![Build Status](https://travis-ci.org/4rlm/utf8_sanitizer.svg?branch=master)](https://travis-ci.org/4rlm/utf8_sanitizer)
-
-https://badge.fury.io/rb/utf8_sanitizer.svg
-
 [![Gem Version](https://badge.fury.io/rb/utf8_sanitizer.svg)](https://badge.fury.io/rb/utf8_sanitizer)
 
-<a href="https://badge.fury.io/rb/utf8_sanitizer"><img src="https://badge.fury.io/rb/utf8_sanitizer.svg" alt="Gem Version" height="18"></a>
-!https://badge.fury.io/rb/utf8_sanitizer.svg!:https://badge.fury.io/rb/utf8_sanitizer
-
-{<img src="https://badge.fury.io/rb/utf8_sanitizer.svg" alt="Gem Version" />}[https://badge.fury.io/rb/utf8_sanitizer]
-
-image:https://badge.fury.io/rb/utf8_sanitizer.svg["Gem Version", link="https://badge.fury.io/rb/utf8_sanitizer"]
-
-.. image:: https://badge.fury.io/rb/utf8_sanitizer.svg
-    :target: https://badge.fury.io/rb/utf8_sanitizer
 
 
 Removes invalid UTF8 characters & extra whitespace (carriage returns, new lines, tabs, spaces, etc.) from csv or strings. Also provides detailed report indicating row numbers containing non-UTF8 and extra whitespace, and before and after to compare changes.
